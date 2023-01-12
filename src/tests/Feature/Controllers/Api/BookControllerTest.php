@@ -109,12 +109,12 @@ class BookControllerTest extends TestCase
 
         Notification::fake();
 
-        $use_case = app()->make(\App\UseCase\Book\CreateAndFollowerNotificationUseCase::class);
-        /** @var Book $book */
-        $book = $use_case(1, $book);
-        $this->assertEquals(1, $book->user_id);
-        $this->assertEquals('本1', $book->title);
-        $this->assertEquals('本文1', $book->content);
+        $res = $this->post(route('api.books', $book));
+        $res->assertStatus(201);
+        $body = $res->json();
+        $this->assertEquals(1, $body['user_id']);
+        $this->assertEquals('本1', $body['title']);
+        $this->assertEquals('本文1', $body['content']);
 
         // メールが2個送信されたことをテスト
         Notification::assertSentTimes(ReleaseNotification::class, 2);

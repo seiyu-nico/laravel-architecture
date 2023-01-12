@@ -31,6 +31,6 @@ class BookController extends Controller
             本来であれば$request->validated()['user_id']ではなくAuth::ID()などだが
             ここではサンプルなのでRequestから取得する
          */
-        return response()->json($use_case((int) $request->validated()['user_id'], (array) $request->validated()), 200);
+        return response()->json($use_case((int) $request->validated()['user_id'], (array) $request->validated()), 201);
     }
 }
