@@ -16,7 +16,9 @@ services:
       - type: bind
         source: ./infra/docker/php/php.ini/php.${ENV-local}.ini
         target: /usr/local/etc/php/php.ini
-
+    networks:
+      - default
+      - dev-container
   web:
     build:
       context: .
@@ -30,6 +32,8 @@ services:
       - type: bind
         source: ./src
         target: /src
+    networks:
+      - default
   db:
     build:
       context: .
@@ -54,22 +58,8 @@ services:
       - MYSQL_USER=${DB_USERNAME:-tech}
       - MYSQL_PASSWORD=${DB_PASSWORD:-password}
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD:-password}
-  node:
-    build:
-      context: .
-      dockerfile: ./infra/docker/node/Dockerfile
-      args:
-        - UID=${UID:-1000}
-        - GID=${GID:-1000}
-    volumes:
-      - type: bind
-        source: ./src
-        target: /src
-    tty: true
-    depends_on:
-      - app
-    ports:
-      - target: 3000
-        published: ${NODE_PUBLISHED_PORT:-3000}
-        protocol: tcp
-        mode: host
+    networks:
+      - default
+networks:
+  dev-container:
+    external: true

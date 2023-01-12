@@ -48,11 +48,11 @@ abstract class Service
      * モデルを作成する
      *
      * @param  array<mixed>  $payload
-     * @return ?Model
+     * @return Model
      *
      * @throws \Exception
      */
-    public function create(array $payload): ?Model
+    public function create(array $payload): Model
     {
         return $this->repository->create($payload);
     }
