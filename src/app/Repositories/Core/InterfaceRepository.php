@@ -2,7 +2,6 @@
 
 namespace App\Repositories\Core;
 
-use App\Exceptions\InvalidParameterException;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -63,10 +62,10 @@ interface InterfaceRepository
     /**
      * IDを使用して、１行のデータを取得する
      *
-     * @param int|string $id
+     * @param  int|string  $id
      * @param  array<string>  $columns
      * @param  array<string|\Closure>  $relations
-     * @param  array<string>   $appends
+     * @param  array<string>  $appends
      * @return Model
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
@@ -82,11 +81,11 @@ interface InterfaceRepository
      * モデルを作成する
      *
      * @param  array<mixed>  $payload
-     * @return ?Model
+     * @return Model
      *
      * @throws \Exception
      */
-    public function create(array $payload): ?Model;
+    public function create(array $payload): Model;
 
     /**
      * データをアップデートする

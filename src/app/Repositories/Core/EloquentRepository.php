@@ -107,10 +107,10 @@ class EloquentRepository implements InterfaceRepository
     /**
      * IDを使用して、１行のデータを取得する
      *
-     * @param int|string $id
+     * @param  int|string  $id
      * @param  array<string>  $columns
      * @param  array<string|\Closure>  $relations
-     * @param  array<string>   $appends
+     * @param  array<string>  $appends
      * @return Model
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
@@ -128,15 +128,13 @@ class EloquentRepository implements InterfaceRepository
      * モデルを作成する
      *
      * @param  array<mixed>  $payload
-     * @return ?Model
+     * @return Model
      *
      * @throws \Exception
      */
-    public function create(array $payload): ?Model
+    public function create(array $payload): Model
     {
-        $model = $this->model->create($payload);
-
-        return $model->fresh();
+        return $this->model->create($payload);
     }
 
     /**
@@ -158,7 +156,7 @@ class EloquentRepository implements InterfaceRepository
 
         $result = $model->update($payload);
 
-        if (!$result) {
+        if (! $result) {
             throw new \Exception('不正なパラメータ');
         }
 
@@ -187,7 +185,7 @@ class EloquentRepository implements InterfaceRepository
      */
     public function deleteById(int|string $id): bool
     {
-        if (!$this->findById($id)->delete()) {
+        if (! $this->findById($id)->delete()) {
             throw new \Exception('不正なID');
         }
 
