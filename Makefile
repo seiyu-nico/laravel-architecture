@@ -100,10 +100,6 @@ pint:
 	docker compose exec app composer pint
 check-pint:
 	docker compose exec app composer check-pint
-fix-style:
-	docker compose exec app composer fix-style
-check-style:
-	docker compose exec app composer check-style
 phpstan:
 	docker compose exec app composer phpstan
 install-packages-laravel-pint:
