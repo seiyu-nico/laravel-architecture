@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Services;
+namespace Tests\Unit\Services\Book;
 
 use App\Models\Book;
 use App\Models\Review;

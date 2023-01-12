@@ -3,6 +3,7 @@
 namespace App\UseCase\User;
 
 use App\Services\UserService;
+use Illuminate\Support\Collection;
 
 class IndexUseCase
 {
@@ -11,7 +12,7 @@ class IndexUseCase
     ) {
     }
 
-    public function __invoke()
+    public function __invoke(): Collection
     {
         return $this->service->all();
     }

@@ -23,6 +23,7 @@
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
+        "nunomaduro/larastan": "^2.3",
         "phpunit/phpunit": "^9.5.10",
         "spatie/laravel-ignition": "^1.0"
     },
@@ -53,7 +54,8 @@
             "@php artisan key:generate --ansi"
         ],
         "pint": "./vendor/bin/pint -v",
-        "check-pint": "./vendor/bin/pint --test"
+        "check-pint": "./vendor/bin/pint --test",
+        "phpstan": "./vendor/bin/phpstan analyse --xdebug"
     },
     "extra": {
         "laravel": {
