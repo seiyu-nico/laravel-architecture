@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\UseCase\User;
+namespace Tests\Unit\UseCase\Book;
 
 use App\Models\Book;
 use App\Models\Review;

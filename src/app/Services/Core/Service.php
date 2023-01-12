@@ -20,8 +20,8 @@ abstract class Service
     }
 
     /**
-     * @param  array  $columns
-     * @param  array  $relations
+     * @param  array<string>  $columns
+     * @param  array<string|\Closure>  $relations
      * @return Collection
      */
     public function all(array $columns = ['*'], array $relations = []): Collection
@@ -45,35 +45,41 @@ abstract class Service
     }
 
     /**
-     * @param  array  $attributes
-     * @return Model
+     * モデルを作成する
      *
-     * @throws InvalidParameterException
+     * @param  array<mixed>  $payload
+     * @return ?Model
+     *
+     * @throws \Exception
      */
-    public function create(array $attributes): Model
+    public function create(array $payload): ?Model
     {
-        return $this->repository->create($attributes);
+        return $this->repository->create($payload);
     }
 
     /**
-     * @param  int  $id
-     * @param  array  $attributes
+     * データをアップデートする
+     *
+     * @param  int|string  $id
+     * @param  array<mixed>  $payload
      * @return Model
      *
-     * @throws InvalidParameterException
+     * @throws \Exception
      */
-    public function update(int $id, array $attributes): Model
+    public function update(int|string $id, array $payload): Model
     {
-        return $this->repository->update($id, $attributes);
+        return $this->repository->update($id, $payload);
     }
 
     /**
-     * @param  int  $id
+     * IDを使用して、データを削除する
+     *
+     * @param  int|string  $id
      * @return true
      *
-     * @throws InvalidParameterException
+     * @throws \Exception
      */
-    public function delete(int $id): bool
+    public function delete(int|string $id): bool
     {
         return $this->repository->deleteById($id);
     }

@@ -12,8 +12,8 @@ interface InterfaceRepository
     /**
      * 全部のデータを取得する.
      *
-     * @param  array  $columns
-     * @param  array  $relations
+     * @param  array<string>  $columns
+     * @param  array<string|\Closure>  $relations
      * @return Collection
      */
     public function all(array $columns = ['*'], array $relations = []): Collection;
@@ -21,10 +21,10 @@ interface InterfaceRepository
     /**
      * 指定した条件に合ってるデータを取得する
      *
-     * @param  array  $columns
-     * @param  array  $conditions
-     * @param  array  $relations
-     * @param  array  $orders
+     * @param  array<string>  $columns
+     * @param  array<string, \Closure|string|int>  $conditions
+     * @param  array<string|\Closure>  $relations
+     * @param  array<string>  $orders
      * @param  int|null  $limit
      * @return Collection
      */
@@ -33,10 +33,10 @@ interface InterfaceRepository
     /**
      * 指定した条件に合ってるデータを取得する(ページネーション)
      *
-     * @param  array  $columns
-     * @param  array|\Closure  $conditions
-     * @param  array  $relations
-     * @param  array  $orders
+     * @param  array<string>  $columns
+     * @param  array<string>|\Closure  $conditions
+     * @param  array<string|\Closure>  $relations
+     * @param  array<string>  $orders
      * @param  int  $per_page
      * @param  int  $page
      * @return LengthAwarePaginator
@@ -53,9 +53,9 @@ interface InterfaceRepository
     /**
      * 指定した条件に合ってるデータを取得する
      *
-     * @param  array  $columns
-     * @param  array  $conditions
-     * @param  array  $relations
+     * @param  array<string>  $columns
+     * @param  array<string, \Closure|string|int>  $conditions
+     * @param  array<string|\Closure>  $relations
      * @return Model|null
      */
     public function findOneWithConditions(array $columns = ['*'], array $conditions = [], array $relations = []): ?Model;
@@ -63,16 +63,16 @@ interface InterfaceRepository
     /**
      * IDを使用して、１行のデータを取得する
      *
-     * @param $id
-     * @param  array  $columns
-     * @param  array  $relations
-     * @param  array  $appends
+     * @param int|string $id
+     * @param  array<string>  $columns
+     * @param  array<string|\Closure>  $relations
+     * @param  array<string>   $appends
      * @return Model
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      */
     public function findById(
-        $id,
+        int|string $id,
         array $columns = ['*'],
         array $relations = [],
         array $appends = []
@@ -81,29 +81,29 @@ interface InterfaceRepository
     /**
      * モデルを作成する
      *
-     * @param  array  $payload
-     * @return Model
+     * @param  array<mixed>  $payload
+     * @return ?Model
      *
-     * @throws InvalidParameterException
+     * @throws \Exception
      */
-    public function create(array $payload): Model;
+    public function create(array $payload): ?Model;
 
     /**
      * データをアップデートする
      *
      * @param  int|string  $id
-     * @param  array  $payload
+     * @param  array<mixed>  $payload
      * @return Model
      *
-     * @throws InvalidParameterException
+     * @throws \Exception
      */
     public function update(int|string $id, array $payload): Model;
 
     /**
      * データを挿入または更新する
      *
-     * @param  array  $attributes
-     * @param  array  $values
+     * @param  array<mixed>  $attributes
+     * @param  array<mixed>  $values
      * @return Model
      */
     public function updateOrCreate(array $attributes, array $values): Model;
@@ -112,9 +112,9 @@ interface InterfaceRepository
      * IDを使用して、データを削除する
      *
      * @param  int|string  $id
-     * @return bool
+     * @return true
      *
-     * @throws InvalidParameterException
+     * @throws \Exception
      */
     public function deleteById(int|string $id): bool;
 }

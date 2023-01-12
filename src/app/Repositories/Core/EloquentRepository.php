@@ -23,8 +23,8 @@ class EloquentRepository implements InterfaceRepository
     /**
      * 全部のデータを取得する.
      *
-     * @param  array  $columns
-     * @param  array  $relations
+     * @param  array<string>  $columns
+     * @param  array<string|\Closure>  $relations
      * @return Collection
      */
     public function all(array $columns = ['*'], array $relations = []): Collection
@@ -35,10 +35,10 @@ class EloquentRepository implements InterfaceRepository
     /**
      * 指定した条件に合ってるデータを取得する
      *
-     * @param  array  $columns
-     * @param  array  $conditions
-     * @param  array  $relations
-     * @param  array  $orders
+     * @param  array<string>  $columns
+     * @param  array<string, \Closure|string|int>  $conditions
+     * @param  array<string|\Closure>  $relations
+     * @param  array<string>  $orders
      * @param  int|null  $limit
      * @return Collection
      */
@@ -59,10 +59,10 @@ class EloquentRepository implements InterfaceRepository
     /**
      * 指定した条件に合ってるデータを取得する(ページネーション)
      *
-     * @param  array  $columns
-     * @param  array|\Closure  $conditions
-     * @param  array  $relations
-     * @param  array  $orders
+     * @param  array<string>  $columns
+     * @param  array<string, \Closure|string|int>  $conditions
+     * @param  array<string|\Closure>  $relations
+     * @param  array<string>  $orders
      * @param  int  $per_page
      * @param  int  $page
      * @return LengthAwarePaginator
@@ -92,9 +92,9 @@ class EloquentRepository implements InterfaceRepository
     /**
      * 指定した条件に合ってるデータを取得する
      *
-     * @param  array  $columns
-     * @param  array  $conditions
-     * @param  array  $relations
+     * @param  array<string>  $columns
+     * @param  array<string, \Closure|string|int>  $conditions
+     * @param  array<string|\Closure>  $relations
      * @return Model|null
      */
     public function findOneWithConditions(array $columns = ['*'], array $conditions = [], array $relations = []): ?Model
@@ -105,20 +105,36 @@ class EloquentRepository implements InterfaceRepository
     }
 
     /**
+     * IDを使用して、１行のデータを取得する
+     *
+     * @param int|string $id
+     * @param  array<string>  $columns
+     * @param  array<string|\Closure>  $relations
+     * @param  array<string>   $appends
+     * @return Model
+     *
+     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
+     */
+    public function findById(
+        int|string $id,
+        array $columns = ['*'],
+        array $relations = [],
+        array $appends = []
+    ): Model {
+        return $this->model->query()->select($columns)->with($relations)->findOrFail($id)->append($appends);
+    }
+
+    /**
      * モデルを作成する
      *
-     * @param  array  $payload
-     * @return Model
+     * @param  array<mixed>  $payload
+     * @return ?Model
      *
      * @throws \Exception
      */
-    public function create(array $payload): Model
+    public function create(array $payload): ?Model
     {
         $model = $this->model->create($payload);
-
-        if (is_null($model)) {
-            throw new \Exception('不正なパラメータ');
-        }
 
         return $model->fresh();
     }
@@ -127,7 +143,7 @@ class EloquentRepository implements InterfaceRepository
      * データをアップデートする
      *
      * @param  int|string  $id
-     * @param  array  $payload
+     * @param  array<mixed>  $payload
      * @return Model
      *
      * @throws \Exception
@@ -142,7 +158,7 @@ class EloquentRepository implements InterfaceRepository
 
         $result = $model->update($payload);
 
-        if (! $result) {
+        if (!$result) {
             throw new \Exception('不正なパラメータ');
         }
 
@@ -152,8 +168,8 @@ class EloquentRepository implements InterfaceRepository
     /**
      * データを挿入または更新する
      *
-     * @param  array  $attributes
-     * @param  array  $values
+     * @param  array<mixed>  $attributes
+     * @param  array<mixed>  $values
      * @return Model
      */
     public function updateOrCreate(array $attributes, array $values): Model
@@ -171,30 +187,10 @@ class EloquentRepository implements InterfaceRepository
      */
     public function deleteById(int|string $id): bool
     {
-        if (! $this->findById($id)->delete()) {
+        if (!$this->findById($id)->delete()) {
             throw new \Exception('不正なID');
         }
 
         return true;
-    }
-
-    /**
-     * IDを使用して、１行のデータを取得する
-     *
-     * @param $id
-     * @param  array  $columns
-     * @param  array  $relations
-     * @param  array  $appends
-     * @return Model
-     *
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
-     */
-    public function findById(
-        $id,
-        array $columns = ['*'],
-        array $relations = [],
-        array $appends = []
-    ): Model {
-        return $this->model->query()->select($columns)->with($relations)->findOrFail($id)->append($appends);
     }
 }
