@@ -1,7 +1,6 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Api;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,6 +12,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+use Illuminate\Support\Facades\Route;
+
 Route::name('api.')->group(function () {
-    Route::get('/users', [App\Http\Controllers\Api\UserController::class, 'index'])->name('users');
+    Route::get('/users', [Api\UserController::class, 'index'])->name('users');
+    Route::get('/users/{id}/books', [Api\BookController::class, 'showUserBooks'])->name('users.books');
 });

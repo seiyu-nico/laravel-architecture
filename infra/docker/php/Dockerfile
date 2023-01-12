@@ -30,7 +30,8 @@ RUN apt-get update \
     intl \
     pdo_mysql \
     zip \
-    bcmath
+    bcmath \
+    opcache
 
 COPY ./infra/docker/php/php.ini/php.${ENV}.ini /usr/local/etc/php/php.ini
 COPY ./infra/docker/php/black-list.txt /usr/local/etc/php/black-list.txt
