@@ -24,8 +24,7 @@ class BookService extends Service
             relations: ['reviews']
         );
 
-        return $books->map(function (\Illuminate\Database\Eloquent\Model $book) {
-            /** @var Book $book */
+        return $books->map(function (Book $book) {
             return [
                 ...$book->only(
                     [
