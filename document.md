@@ -48,7 +48,7 @@ style: |
 
 ---
 # 前置き
-- このアーキテクチャが全てじゃないしもっといいものもあると思う
+- このアーキテクチャが全てじゃないし、もっといいものもあると思う
 - あくまで今これが個人的に一番しっくりきてる
     - 1か月後には別のこと言ってるかもしれないｗ
 
@@ -75,6 +75,24 @@ style: |
 | **service**    | **repositoryでSQLを構築するためのデータの作成** <br> **システムがゆえに発生する処理**                                |
 | **repository** | **データアクセスの為に SQL 構築**                                   |
 
+---
+## controller
+- バリデーション実行後そのままusecaseへ投げ処理をしてもらう
+```php
+    public function store(
+        CreateRequest $request,
+        CreateAndFollowerNotificationUseCase $use_case
+    ): JsonResponse {
+        return response()->json(
+            $use_case(
+                // ここではサンプルなのRequestの中身からuser_idを取得
+                $request->validated()['user_id'], 
+                $request->validated()
+            ),
+            201
+        );
+    }
+```
 ---
 
 ## usecase
@@ -128,4 +146,44 @@ style: |
         });
     }
 ```
+
+---
+## repository
+- SQL構築
+```php
+    public function findWithConditions(...): Collection
+    {
+        // リレーションと条件の構築
+        $model = $this->model->with($relations)->where($conditions);
+        // 並び順の構築
+        foreach ($orders as $key => $direction) {
+            $model->orderBy($key, $direction);
+        }
+        // 取得制限があればlimitの設定
+        if ($limit) {
+            $model->limit($limit);
+        }
+        // 取得
+        return $model->get($columns);
+    }
+```
+
+--- 
+## メリット
+- どこで何を?が比較的分かりやすいので修正/エラーなどの対応箇所の把握が楽
+  - SQLに問題?: repository
+  - ビジネスロジックに問題?: service or model
+  - レスポンスの値に問題?: usecase
+- バージョンアップ時やFWを乗り換えるときもそこまで苦労しない
+- そこそこ分離する割にファイルが少ない?
+- 後から入った人が理解しやすい
+  - これに限らずアーキテクチャがちゃんとしていれば問題ない
+
+---
+## デメリット
+- ビジネスロジック次第だがserviceが大きくなりやすい
+- リレーション先で条件を絞る時などはserviceでもORMも使っている・・・
+- 実はもっとわけられる
+  - modelにORMとしての役割とビジネスロジックを持たせている
+  - 他にもきっとある
 
